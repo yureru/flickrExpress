@@ -1,0 +1,22 @@
+{
+  "name": "flickrexpress",
+  "version": "1.0.0",
+  "description": "Trying out the Flickr API",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yureru/flickrExpress.git"
+  },
+  "author": "Bryan Rolando",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yureru/flickrExpress/issues"
+  },
+  "homepage": "https://github.com/yureru/flickrExpress#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
