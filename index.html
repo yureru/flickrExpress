@@ -10,24 +10,43 @@
 </head>
 <body>
 
-<h3>Hola<%= (name) ? ` ${name}!` : "!" %></h3>
+<!-- <h3>Hola<%= (name) ? ` ${name}!` : "!" %></h3> -->
+
+    {{#if name}}
+        <h3>Hola {{name}}!</h3>
+    {{else}}
+        <h3>Hola!</h3>
+    {{/if}}
+
     <div>
-        <div class="img-row">
-            <button class="square"></button>
-            <button class="square"></button>
-            <button class="square"></button>
-        </div>
-        
-        <div class="img-row">
-            <button class="square"></button>
-            <button class="square"></button>
-            <button class="square"></button>
-        </div>
-    
-        <div class="img-row">
-            <button class="square"></button>
-            <button class="square"></button>
-            <button class="square"></button>
+        <!-- <div class="img-row">
+            {{#each images}}
+                <button class="square">{{@index}}: {{this}}</button>
+            {{/each}}
+        </div> -->
+        <!-- {{#each images}}
+            {{#if @index}}
+            <button class="square">{{@index}}: {{this}}</button>
+            {{else}}
+            <button class="square">{{this}}</button>
+            {{/if}}
+        {{/each}} -->
+        <div>
+                <div class="img-row">
+                    <button class="square">{{images.[0]}}</button>
+                    <button class="square">{{images.[1]}}</button>
+                    <button class="square">{{images.[2]}}</button>
+                </div>
+                <div class="img-row">
+                    <button class="square">{{images.[3]}}</button>
+                    <button class="square">{{images.[4]}}</button>
+                    <button class="square">{{images.[5]}}</button>
+                </div>
+                <div class="img-row">
+                    <button class="square">{{images.[6]}}</button>
+                    <button class="square">{{images.[7]}}</button>
+                    <button class="square">{{images.[8]}}</button>
+                </div>
         </div>
     </div>
 
