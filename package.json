@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/yureru/flickrExpress#readme",
   "dependencies": {
+    "ejs": "^2.6.1",
     "express": "^4.16.3"
   }
 }
