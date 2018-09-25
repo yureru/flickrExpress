@@ -3,6 +3,7 @@ const app = express()
 const path = require('path')
 // const bodyParser = require('body-parser')
 const hbs = require('hbs')
+const request = require('request')
 const port = 3000
 
 // handlebar / hbs
@@ -22,10 +23,21 @@ app.use(express.static(path.join(__dirname, 'scripts')))
 app.get('/', (req, res) => {
     let data = {};
     data.name = req.query.name;
-    data.images = [1,2,3,4,5,6,7,8,9];
-    var name = "test";
-    res.render(path.join(__dirname + '/index.html'), data)
-})
+    // data.images = [1,2,3,4,5,6,7,8,9];
+
+    getImagesUrl((images) => {
+        data.images = images;
+        res.render(path.join(__dirname + '/index.html'), data);
+        // console.log("Length of images is: " + images.length);
+        // let r = JSON.parse(images);
+        // console.log("R object is: " + r.items[0].media.m);
+    });
+    // getImagesUrl((body) => { flickr = body; });
+    // let flickr = getImagesUrl();
+
+    // console.log("Flickr length is: " + flickr.length);
+    
+});
 
 // hbs.registerHelper("if", function(conditional, options) {
 //     return options.fn(this);
@@ -35,5 +47,32 @@ app.get('/', (req, res) => {
 //     //   options.inverse(this);
 //     // }
 //   });
+
+// function getImagesUrl(fn) {
+//     let data;
+//     request('https://api.flickr.com/services/feeds/photos_public.gne?tags=camping&format=json', function(err, resp, body) {
+//         console.log("Length of body is: " + body.length)
+//         fn(body);
+//       });
+// }
+
+async function getImagesUrl(fn) {
+    try {
+    request('https://api.flickr.com/services/feeds/photos_public.gne?tags=camping&format=json&nojsoncallback=1', function(err, resp, body) {
+        console.log("Length of body is: " + body.length)
+
+        let jsonbody = JSON.parse(body);
+        let images = [];
+        for (let i = 0; i < 9; ++i) {
+            images.push(jsonbody.items[i].media.m);
+        }
+
+        fn(images);
+    });
+
+    } catch (err) {
+        console.log(err)
+    }
+};
 
 app.listen(port, () =>  console.log(`FlickrExpress listening on port ${port}!`))
