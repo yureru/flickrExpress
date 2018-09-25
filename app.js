@@ -48,6 +48,36 @@ app.get('/', (req, res) => {
 //     // }
 //   });
 
+// basic block variation
+// hbs.registerHelper('row', function(options) {
+//     return new Handlebars.SafeString(
+//         '<div class="img-row">' +
+//         options.fn(this) +
+//         '</div>');
+// });
+
+// each image loop
+hbs.registerHelper('eachImage', function(context, options) {
+    let rowStr = '<div class="img-row">';
+    let rowEnd = '</div>';
+    let ret = "";
+
+    for (let i = 0; i < context.length; ++i) {
+        if (i == 0 || i == 3 || i == 6) {
+            ret += rowStr;
+        }
+
+        // ret += options.fn(this);
+        ret += this;
+
+        if (i == 2 || i == 5 || i == 8) {
+            ret += rowEnd;
+        }
+    }
+
+    return options.fn(ret);
+});
+
 // function getImagesUrl(fn) {
 //     let data;
 //     request('https://api.flickr.com/services/feeds/photos_public.gne?tags=camping&format=json', function(err, resp, body) {
@@ -60,16 +90,13 @@ async function getImagesUrl(fn) {
     try {
     request('https://api.flickr.com/services/feeds/photos_public.gne?tags=camping&format=json&nojsoncallback=1', function(err, resp, body) {
         console.log("Length of body is: " + body.length)
-
         let jsonbody = JSON.parse(body);
         let images = [];
         for (let i = 0; i < 9; ++i) {
             images.push(jsonbody.items[i].media.m);
         }
-
         fn(images);
     });
-
     } catch (err) {
         console.log(err)
     }
