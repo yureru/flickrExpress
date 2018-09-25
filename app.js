@@ -19,13 +19,19 @@ app.set('view engine', 'html');
 app.use(express.static(path.join(__dirname, 'media')))
 app.use(express.static(path.join(__dirname, 'scripts')))
 
+// front-end approach
+app.get('/appTwo.html', (req, res) => {
+    res.render(path.join(__dirname + '/appTwo.html'));
+});
+
 // rendering
 app.get('/', (req, res) => {
     let data = {};
     data.name = req.query.name;
+    data.category = req.query.category;
     // data.images = [1,2,3,4,5,6,7,8,9];
 
-    getImagesUrl((images) => {
+    getImagesUrl(data.category, (images) => {
         data.images = images;
         res.render(path.join(__dirname + '/index.html'), data);
         // console.log("Length of images is: " + images.length);
@@ -62,7 +68,7 @@ hbs.registerHelper('eachImage', function(context, options) {
     let rowEnd = '</div>';
     let itemStr = '<img src="';
     let itemEnd = '" class="square">';
-    
+
     let ret = "";
 
     for (let i = 0; i < context.length; ++i) {
@@ -70,7 +76,6 @@ hbs.registerHelper('eachImage', function(context, options) {
             ret += rowStr;
         }
 
-        // ret += options.fn(this);
         ret += itemStr + context[i] + itemEnd;
 
         if (i == 2 || i == 5 || i == 8) {
@@ -78,8 +83,6 @@ hbs.registerHelper('eachImage', function(context, options) {
         }
     }
 
-
-    // return options.fn(ret);
     return ret;
 });
 
@@ -91,9 +94,9 @@ hbs.registerHelper('eachImage', function(context, options) {
 //       });
 // }
 
-async function getImagesUrl(fn) {
+async function getImagesUrl(category, fn) {
     try {
-    request('https://api.flickr.com/services/feeds/photos_public.gne?tags=camping&format=json&nojsoncallback=1', function(err, resp, body) {
+    request('https://api.flickr.com/services/feeds/photos_public.gne?tags=' + (category ? category : 'camping') + '&format=json&nojsoncallback=1', function(err, resp, body) {
         console.log("Length of body is: " + body.length)
         let jsonbody = JSON.parse(body);
         let images = [];
