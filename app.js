@@ -60,6 +60,9 @@ app.get('/', (req, res) => {
 hbs.registerHelper('eachImage', function(context, options) {
     let rowStr = '<div class="img-row">';
     let rowEnd = '</div>';
+    let itemStr = '<img src="';
+    let itemEnd = '" class="square">';
+    
     let ret = "";
 
     for (let i = 0; i < context.length; ++i) {
@@ -68,14 +71,16 @@ hbs.registerHelper('eachImage', function(context, options) {
         }
 
         // ret += options.fn(this);
-        ret += this;
+        ret += itemStr + context[i] + itemEnd;
 
         if (i == 2 || i == 5 || i == 8) {
             ret += rowEnd;
         }
     }
 
-    return options.fn(ret);
+
+    // return options.fn(ret);
+    return ret;
 });
 
 // function getImagesUrl(fn) {
