@@ -1,25 +1,14 @@
 $(document).ready(() => {
-    let name = findGetParameter('name');
-    let category = findGetParameter('category');
     
-    jQuery.ajax({
-        url: 'https://api.flickr.com/services/feeds/photos_public.gne?tags='
-            + (category ? category : 'camping') + '&format=json',
-        dataType: 'jsonp',
-        jsonpCallback: 'jsonFlickrFeed',
-        success: function(resultData) {
-            let images = getImagesArray(resultData);
-            $('#name').html("Hola" + " " + name + "!");
-            createImageElements(images);
+    putImageElements();
 
-        },
-        error : function(jqXHR, textStatus, errorThrown) {
-            console.log("Error!");
-            console.log("jqXHR: " + JSON.stringify(jqXHR));
-            console.log("textStatus: " + JSON.stringify(textStatus));
-            console.log("errorThrown: " + JSON.stringify(errorThrown));
-        },
-    })
+    $('#button').on("click", () => {
+        let name = $('input[name="name"]').val();
+        let category = $('input[name="category"]').val();
+
+        putImageElements(name, category);
+    });
+
 });
 
 function findGetParameter(parameterName) {
@@ -67,4 +56,28 @@ function createImageElements(images) {
     }
 
     $('#content').html(ret);
+}
+
+function putImageElements(name, category) {
+    jQuery.ajax({
+        url: 'https://api.flickr.com/services/feeds/photos_public.gne?tags='
+            + (category ? category : 'camping') + '&format=json',
+        dataType: 'jsonp',
+        jsonpCallback: 'jsonFlickrFeed',
+        success: function(resultData) {
+            let images = getImagesArray(resultData);
+            if (name) {
+                $('#name').html("Hola" + " " + name + "!");
+            }
+            
+            createImageElements(images);
+
+        },
+        error : function(jqXHR, textStatus, errorThrown) {
+            console.log("Error!");
+            console.log("jqXHR: " + JSON.stringify(jqXHR));
+            console.log("textStatus: " + JSON.stringify(textStatus));
+            console.log("errorThrown: " + JSON.stringify(errorThrown));
+        },
+    })
 }
